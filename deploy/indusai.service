@@ -1,0 +1,21 @@
+# systemd unit — copy to /etc/systemd/system/indusai.service and edit paths/user.
+#
+#   sudo cp deploy/indusai.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now indusai
+#
+[Unit]
+Description=INDUSAI Streamlit workbench
+After=network.target
+
+[Service]
+Type=simple
+User=YOUR_LINUX_USER
+WorkingDirectory=/home/YOUR_LINUX_USER/sih
+Environment=PATH=/home/YOUR_LINUX_USER/sih/.venv/bin
+ExecStart=/home/YOUR_LINUX_USER/sih/.venv/bin/streamlit run app.py --server.address=0.0.0.0 --server.port=8501 --server.headless=true
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
